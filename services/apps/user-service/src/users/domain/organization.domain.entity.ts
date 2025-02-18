@@ -1,6 +1,6 @@
-import { ApiException } from '../../common/ddd/api.exception';
-import { DomainEntity, PersitenceEntity } from '../../common/ddd/domain-entity';
-import { UserRole } from '../../common/types/user-role.enum';
+import { ApiException } from '@app/ddd/types/api.exception';
+import { PersitenceEntity, DomainEntity } from '@app/ddd';
+import { UserRole } from '@app/shared';
 
 export type CreateUserEvent = {
   type: 'create_user';

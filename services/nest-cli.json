@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/expenses-service",
   "projects": {
+    "ddd": {
+      "type": "library",
+      "root": "libs/ddd",
+      "entryFile": "index",
+      "sourceRoot": "libs/ddd/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/ddd/tsconfig.lib.json"
+      }
+    },
     "expenses-service": {
       "type": "application",
       "root": "apps/expenses-service",
@@ -17,6 +26,15 @@
       "sourceRoot": "apps/expenses-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/expenses-service/tsconfig.app.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
       }
     },
     "user-service": {

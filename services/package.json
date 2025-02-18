@@ -30,7 +30,8 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -76,7 +77,12 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1",
+      "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
+    }
   }
 }

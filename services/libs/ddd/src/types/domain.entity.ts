@@ -1,5 +1,5 @@
-export interface PersitenceEntity {
-  id?: string;
+export interface PersitenceEntity<Id = string> {
+  id?: Id;
 }
 
 export class DomainEntity<Event, Entity extends PersitenceEntity> {

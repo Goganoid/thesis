@@ -1,7 +1,7 @@
-import { ApiException } from '@app/user-service/common/ddd/api.exception';
 import { SupabaseService } from '@app/user-service/common/supabase/supabase.service';
 import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
 import { LoginDto } from '../../dto/login.dto';
+import { ApiException } from '@app/ddd/types/api.exception';
 
 export class LoginCommand implements ICommand {
   constructor(public readonly args: LoginDto) {}

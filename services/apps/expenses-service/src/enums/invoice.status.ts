@@ -1,0 +1,6 @@
+export enum InvoiceStatus {
+  PAID = 'PAID',
+  IN_PROGRESS = 'IN_PROGRESS',
+  REJECTED = 'REJECTED',
+  WAITING_APPROVAL = 'WAITING_APPROVAL',
+}

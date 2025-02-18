@@ -1,4 +1,4 @@
-import { UserRole } from '@app/user-service/common/types/user-role.enum';
+import { UserRole } from '@app/shared';
 import { IsEmail, IsEnum } from 'class-validator';
 
 export class CreateInviteDto {

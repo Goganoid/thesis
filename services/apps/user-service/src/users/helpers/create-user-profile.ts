@@ -1,6 +1,6 @@
-import { ApiException } from '@app/user-service/common/ddd/api.exception';
+import { ApiException } from '@app/ddd/types/api.exception';
+import { UserRole } from '@app/shared';
 import { Database } from '@app/user-service/common/supabase/database.types';
-import { UserRole } from '@app/user-service/common/types/user-role.enum';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const createUserProfile = async (

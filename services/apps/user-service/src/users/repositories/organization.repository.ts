@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { User } from '@supabase/supabase-js';
-import { ApiException } from '../../common/ddd/api.exception';
+import { ApiException } from '@app/ddd/types/api.exception';
 import { SupabaseService } from '../../common/supabase/supabase.service';
 import {
   CreateInviteEvent,
@@ -8,10 +8,10 @@ import {
   DeleteInviteEvent,
   DeleteUserEvent,
   OrganizationAggregate,
-} from '../entities/organization.domain.entity';
+} from '../domain/organization.domain.entity';
 import { signUpUser } from '../helpers/signup-user';
 import { createUserProfile } from '../helpers/create-user-profile';
-import { UserRole } from '../../common/types/user-role.enum';
+import { UserRole } from '@app/shared';
 
 @Injectable()
 export class OrganizationRepository {

@@ -18,9 +18,21 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/ddd": [
+        "libs/ddd/src"
+      ],
+      "@app/ddd/*": [
+        "libs/ddd/src/*"
+      ],
+      "@app/shared": [
+        "libs/shared/src"
+      ],
+      "@app/shared/*": [
+        "libs/shared/src/*"
+      ],
       "@app/user-service/*": [
         "apps/user-service/src/*"
-      ],
+      ]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ApiException } from '@app/user-service/common/ddd/api.exception';
+import { ApiException } from '@app/ddd/types/api.exception';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const signUpUser = async (

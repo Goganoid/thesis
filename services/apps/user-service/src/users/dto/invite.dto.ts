@@ -1,4 +1,4 @@
-import { UserRole } from '@app/user-service/common/types/user-role.enum';
+import { UserRole } from '@app/shared';
 
 export class InviteDto {
   id: string;
