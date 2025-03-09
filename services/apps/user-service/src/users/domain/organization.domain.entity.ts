@@ -111,6 +111,12 @@ export class OrganizationAggregate extends DomainEntity<
     if (existingInvite) {
       throw new ApiException('Invite already exists');
     }
+    const existingUser = this.entity.users.find(
+      (user) => user.email === email,
+    );
+    if (existingUser) {
+      throw new ApiException('User already exists');
+    } 
     this.entity.invites.push({ email, role });
     this.events.push({ type: 'create_invite', email, role });
   }

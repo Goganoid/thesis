@@ -3,10 +3,11 @@ import { IQueryHandler, Query, QueryHandler } from '@nestjs/cqrs';
 import { ApiException } from '@app/ddd/types/api.exception';
 import { InviteDto } from '../../dto/invite.dto';
 import { SupabaseService } from '@app/user-service/common/supabase/supabase.service';
-import { UserRole } from '@app/user-service/common/types/user-role.enum';
+import { UserRole } from '@app/shared';
+import { UserData } from '@app/auth/user.type';
 
 export class GetInvitesQuery extends Query<InviteDto[]> {
-  constructor(public readonly args: void) {
+  constructor(public readonly args: { user: UserData }) {
     super();
   }
 }
@@ -17,7 +18,10 @@ export class GetInvitesHandler implements IQueryHandler<GetInvitesQuery> {
 
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  async execute() {
+  async execute({ args: { user } }: GetInvitesQuery) {
+    if (user.role === UserRole.User) {
+      throw new ApiException('No access', 401);
+    }
     const client = this.supabaseService.getClient();
     const result = await client.from('invites').select();
     if (result.error) {

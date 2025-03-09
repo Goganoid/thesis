@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  expenses_db:
+    image: postgres:15
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expenses_db
+    volumes:
+      - expenses_data:/var/lib/postgresql/data
+
+  timeoffs_db:
+    image: postgres:15
+    ports:
+      - "5435:5432" 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: timeoffs_db
+    volumes:
+      - timeoffs_data:/var/lib/postgresql/data
+
+volumes:
+  expenses_data:
+  timeoffs_data:

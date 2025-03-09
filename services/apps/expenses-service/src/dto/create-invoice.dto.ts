@@ -1,7 +1,5 @@
-import {
-  InvoiceCategory,
-  InvoiceStatus,
-} from '../domain/expenses/expenses.domain.entity';
+import { InvoiceCategory } from '../enums/invoice.category';
+import { InvoiceStatus } from '../enums/invoice.status';
 
 export class CreateInvoiceDto {
   amount: number;

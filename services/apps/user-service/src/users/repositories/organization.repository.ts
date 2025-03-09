@@ -69,9 +69,13 @@ export class OrganizationRepository {
 
     let usersResult = await client.auth.admin.listUsers();
 
-    while (!usersResult.error && usersResult.data.nextPage) {
+    while (!usersResult.error) {
       users.push(...usersResult.data.users);
-      usersResult = await client.auth.admin.listUsers();
+      if (usersResult.data.nextPage) {
+        usersResult = await client.auth.admin.listUsers();
+      } else {
+        break;
+      }
     }
 
     if (usersResult.error) {

@@ -5,13 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InvoiceEntity } from '../../entities/invoice.entity';
 import { InvoiceStatus } from '../../enums/invoice.status';
+import { UserData } from '@app/auth';
 
 export class DeleteInvoiceCommand implements ICommand {
   constructor(
     public readonly args: {
       invoiceId: string;
-      userId: string;
-      userRole: UserRole;
+      user: UserData;
     },
   ) {}
 }
@@ -35,8 +35,8 @@ export class DeleteInvoiceHandler
       invoice.status === InvoiceStatus.IN_PROGRESS;
 
     const isAdmin =
-      args.userRole === UserRole.Admin || args.userRole === UserRole.Manager;
-    const isInvoiceOwner = args.userId == invoice.userId;
+      args.user.role === UserRole.Admin || args.user.role === UserRole.Manager;
+    const isInvoiceOwner = args.user.id == invoice.userId;
     const hasAccessToInvoice = isAdmin || isInvoiceOwner;
 
     if (!invoiceNotProcessed) {
@@ -49,6 +49,6 @@ export class DeleteInvoiceHandler
       throw new ForbiddenException('No access');
     }
 
-    return await this.invoicesRepository.delete(args.invoiceId);
+    await this.invoicesRepository.delete(args.invoiceId);
   }
 }

@@ -1,15 +1,31 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/expenses-service/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/expenses-service/tsconfig.app.json"
+    "webpack": false,
+    "tsConfigPath": "tsconfig.json",
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "introspectComments": true,
+          "controllerKeyOfComment": "summary"
+        }
+      }
+    ]
   },
   "monorepo": true,
-  "root": "apps/expenses-service",
   "projects": {
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    },
     "ddd": {
       "type": "library",
       "root": "libs/ddd",
@@ -35,6 +51,15 @@
       "sourceRoot": "libs/shared/src",
       "compilerOptions": {
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "timeoffs-service": {
+      "type": "application",
+      "root": "apps/timeoffs-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/timeoffs-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/timeoffs-service/tsconfig.app.json"
       }
     },
     "user-service": {

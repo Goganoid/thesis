@@ -1,7 +1,10 @@
 {
-  "name": "expenses-service",
+  "name": "timeoffs-service",
   "version": "1.0.0",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "migration:run": "npm run typeorm migration:run -- -d ./src/config/typeorm.ts",
@@ -15,8 +18,7 @@
   "description": "",
   "dependencies": {
     "@nestjs/typeorm": "^11.0.0",
-    "date-fns": "^4.1.0",
-    "pg": "^8.13.1",
+    "pg": "^8.13.3",
     "typeorm": "^0.3.20"
   }
 }

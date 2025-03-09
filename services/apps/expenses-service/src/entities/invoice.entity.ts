@@ -6,10 +6,10 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
-import { ColumnNumericTransformer } from '../infra/typeorm/numeric.transformer';
 import { InvoiceCategory } from '../enums/invoice.category';
 import { InvoiceStatus } from '../enums/invoice.status';
 import { CategoryEntity } from './category.entity';
+import { ColumnNumericTransformer } from '@app/shared/typeorm/numeric.transformer';
 
 @Entity()
 export class InvoiceEntity {
@@ -20,7 +20,7 @@ export class InvoiceEntity {
   userId: string;
 
   @ManyToOne(() => CategoryEntity, { onDelete: 'CASCADE', nullable: false })
-  @JoinColumn({ name: 'category', referencedColumnName: 'category' })
+  @JoinColumn({ name: 'category', referencedColumnName: 'id' })
   categoryRef: CategoryEntity;
 
   @Column({ name: 'category', nullable: false })

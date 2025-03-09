@@ -27,7 +27,7 @@ export class UpdateCategoryLimitHandler
 
   async execute({ args }: UpdateCategoryLimitCommand) {
     const category = await this.categoriesRepository.findOneOrFail({
-      where: { category: args.category },
+      where: { id: args.category },
       relations: { invoices: true },
     });
 
