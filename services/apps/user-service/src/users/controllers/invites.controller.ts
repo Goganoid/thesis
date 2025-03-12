@@ -5,7 +5,7 @@ import { CreateInviteCommand } from '../commands/invites/create-invite.command';
 import { DeleteInviteCommand } from '../commands/invites/delete-invite.command';
 import { CreateInviteDto } from '../dto/create-invite.dto';
 import { DeleteInviteDto } from '../dto/delete-invite.dto';
-import { GetInvitesQuery } from '../queries/invites/get-invites.query';
+import { GetInvitesQuery } from '../queries/get-invites.query';
 import { Roles, RolesGuard } from '@app/auth/roles.guard';
 import { UserRole } from '@app/shared';
 

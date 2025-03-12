@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { IQueryHandler, Query, QueryHandler } from '@nestjs/cqrs';
 import { ApiException } from '@app/ddd/types/api.exception';
-import { InviteDto } from '../../dto/invite.dto';
+import { InviteDto } from '../dto/invite.dto';
 import { SupabaseService } from '@app/user-service/common/supabase/supabase.service';
 import { UserRole } from '@app/shared';
 import { UserData } from '@app/auth/user.type';

@@ -7,7 +7,8 @@ import { CreateInviteHandler } from './commands/invites/create-invite.command';
 import { DeleteInviteHandler } from './commands/invites/delete-invite.command';
 import { AuthController } from './controllers/auth.controller';
 import { InvitesController } from './controllers/invites.controller';
-import { GetInvitesHandler } from './queries/invites/get-invites.query';
+import { GetInvitesHandler } from './queries/get-invites.query';
+import { GetUserDataHandler } from './queries/get-user-data.query';
 import { OrganizationRepository } from './repositories/organization.repository';
 
 const commands = [
@@ -17,7 +18,7 @@ const commands = [
   CreateInviteHandler,
   DeleteInviteHandler,
 ];
-const queries = [GetInvitesHandler];
+const queries = [GetInvitesHandler, GetUserDataHandler];
 @Module({
   imports: [SupabaseModule],
   providers: [OrganizationRepository, ...commands, ...queries],

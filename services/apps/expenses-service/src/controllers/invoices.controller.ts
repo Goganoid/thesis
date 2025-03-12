@@ -1,4 +1,6 @@
 import { User, UserData } from '@app/auth';
+import { Roles } from '@app/auth/roles.guard';
+import { UserRole } from '@app/shared';
 import {
   Body,
   Controller,
@@ -10,17 +12,14 @@ import {
 } from '@nestjs/common';
 import { CommandBus, CommandResult, QueryBus, QueryResult } from '@nestjs/cqrs';
 import { CreateInvoiceCommand } from '../commands/invoices/create-invoice.command';
+import { DeleteInvoiceCommand } from '../commands/invoices/delete-invoice.command';
+import { UpdateInvoiceStatusCommand } from '../commands/invoices/update-invoice-status.command';
 import { CreateInvoiceDto } from '../dto/create-invoice.dto';
 import { GetInvoiceDataDto } from '../dto/get-invoice-data.dto';
-import { GetAllInvoicesQuery } from '../queries/admin/get-all-invoices.query';
-import { GetInvoicesQuery } from '../queries/user/get-invoice-data.query';
-import { DeleteInvoiceCommand } from '../commands/invoices/delete-invoice.command';
-import { GetCategoriesQuery } from '../queries/admin/get-categories.query';
 import { UpdateInvoiceDto } from '../dto/update-invoice-dto';
-import { UpdateInvoiceStatusCommand } from '../commands/invoices/update-invoice-status.command';
-import { UserRole } from '@app/shared';
-import { Roles } from '@app/auth/roles.guard';
-import { CategoriesDto } from '../dto/categories.dto';
+import { GetAllInvoicesQuery } from '../queries/admin/get-all-invoices.query';
+import { GetCategoriesQuery } from '../queries/admin/get-categories.query';
+import { GetInvoicesQuery } from '../queries/user/get-invoice-data.query';
 
 @Controller('invoices')
 export class InvoicesController {

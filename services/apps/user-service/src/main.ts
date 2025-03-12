@@ -4,15 +4,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-const CORS_ORIGINS = process.env.CORS_ORIGINS;
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
@@ -23,7 +19,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
+  const CORS_ORIGINS = configService.get('CORS_ORIGINS');
+  console.log(CORS_ORIGINS);
   if (CORS_ORIGINS) {
     const corsOptions: CorsOptions = {
       origin: CORS_ORIGINS.split(','),
