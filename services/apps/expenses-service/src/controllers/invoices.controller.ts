@@ -9,10 +9,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, CommandResult, QueryBus, QueryResult } from '@nestjs/cqrs';
 import { CreateInvoiceCommand } from '../commands/invoices/create-invoice.command';
 import { DeleteInvoiceCommand } from '../commands/invoices/delete-invoice.command';
+import { GeneratePresignedUrlCommand } from '../commands/invoices/generate-presigned-url.command';
 import { UpdateInvoiceStatusCommand } from '../commands/invoices/update-invoice-status.command';
 import { CreateInvoiceDto } from '../dto/create-invoice.dto';
 import { GetInvoiceDataDto } from '../dto/get-invoice-data.dto';
@@ -28,10 +30,20 @@ export class InvoicesController {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @Post('presigned-url')
+  async getPresignedUrl(
+    @Body('fileType') fileType: string,
+    @Body('hash') hash: string,
+  ): Promise<CommandResult<GeneratePresignedUrlCommand>> {
+    return await this.commandBus.execute(
+      new GeneratePresignedUrlCommand(fileType, hash),
+    );
+  }
+
   @Get()
   async getUserInvoices(
     @User() user: UserData,
-    @Body() dto: GetInvoiceDataDto,
+    @Query() dto: GetInvoiceDataDto,
   ): Promise<QueryResult<GetInvoicesQuery>> {
     return await this.queryBus.execute(new GetInvoicesQuery({ user, dto }));
   }
@@ -40,7 +52,7 @@ export class InvoicesController {
   @Get('admin/invoices')
   async getAllInvoices(
     @User() user: UserData,
-    @Body() dto: GetInvoiceDataDto,
+    @Query() dto: GetInvoiceDataDto,
   ): Promise<QueryResult<GetAllInvoicesQuery>> {
     return await this.queryBus.execute(new GetAllInvoicesQuery({ user, dto }));
   }

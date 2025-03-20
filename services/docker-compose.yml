@@ -23,6 +23,21 @@ services:
     volumes:
       - timeoffs_data:/var/lib/postgresql/data
 
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack-thesis}"
+    image: localstack/localstack
+    network_mode: bridge
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DISABLE_CORS_CHECKS=1
+      - DISABLE_CUSTOM_CORS_S3=1
+    ports:
+      - "4566-4599:4566-4599"
+    volumes:
+      - "./scripts/localstack:/etc/localstack/init/ready.d"
+      - "//var/run/docker.sock:/var/run/docker.sock"
+
 volumes:
   expenses_data:
   timeoffs_data:

@@ -1,19 +1,19 @@
+import { ColumnNumericTransformer } from '@app/shared/typeorm/numeric.transformer';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { InvoiceCategory } from '../enums/invoice.category';
 import { InvoiceStatus } from '../enums/invoice.status';
 import { CategoryEntity } from './category.entity';
-import { ColumnNumericTransformer } from '@app/shared/typeorm/numeric.transformer';
 
 @Entity()
 export class InvoiceEntity {
-  @PrimaryColumn({ type: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', nullable: false })
@@ -40,7 +40,7 @@ export class InvoiceEntity {
   description: string;
 
   @Column({ type: 'varchar', nullable: true })
-  attachmentUrl: string | null;
+  s3Key: string | null;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

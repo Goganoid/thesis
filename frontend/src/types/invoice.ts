@@ -37,6 +37,6 @@ export interface CreateInvoiceDto {
   amount: number;
   status: InvoiceStatus;
   description: string;
-  attachmentUrl: string | null;
+  s3Key: string | null;
   category: InvoiceCategory;
 } 

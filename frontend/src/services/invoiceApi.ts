@@ -1,13 +1,18 @@
+import {
+  CreateInvoiceDto,
+  Invoice,
+  InvoiceCategory,
+  InvoiceStatus,
+  UserInvoiceData,
+} from "../types/invoice";
+import { transformQueryParams } from "../utils/transformQueryParams";
 import { expensesApiProvider } from "./api";
-import { CreateInvoiceDto, UserInvoiceData } from "../types/invoice";
 
 export const invoiceApi = {
-  getUserInvoices: async (year: number) => {
+  getUserInvoices: async (year: number, status?: InvoiceCategory[]) => {
+    const queryParams = transformQueryParams({ year, status });
     const response = await expensesApiProvider.get<UserInvoiceData>(
-      "/invoices",
-      {
-        data: { year },
-      }
+      `/invoices?${queryParams}`
     );
     return response.data;
   },
@@ -21,9 +26,35 @@ export const invoiceApi = {
   },
 
   deleteInvoice: async (id: string) => {
-    const response = await expensesApiProvider.delete<object>(
+    const response = await expensesApiProvider.delete<unknown>(
       `/invoices/invoices/${id}`
     );
     return response.data;
+  },
+
+  getPresignedUrl: async (fileType: string, hash: string) => {
+    const response = await expensesApiProvider.post<{
+      presignedUrl: string;
+      key: string;
+    }>("/invoices/presigned-url", { fileType, hash });
+    return response.data;
+  },
+
+  admin: {
+    getAllInvoices: async (year: number, status?: InvoiceStatus[]) => {
+      const queryParams = transformQueryParams({ year, status });
+      console.log(queryParams);
+      const response = await expensesApiProvider.get<Invoice[]>(
+        `/invoices/admin/invoices?${queryParams}`
+      );
+      return response.data;
+    },
+    updateInvoiceStatus: async (invoiceId: string, status: InvoiceStatus) => {
+      const response = await expensesApiProvider.put<unknown>(
+        `/invoices/admin/invoices/${invoiceId}/status`,
+        { status }
+      );
+      return response.data;
+    },
   },
 };

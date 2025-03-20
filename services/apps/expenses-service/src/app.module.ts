@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UpdateCategoryLimitHandler } from './commands/categories/update-category-limit.command';
 import { CreateInvoiceHandler } from './commands/invoices/create-invoice.command';
 import { DeleteInvoiceHandler } from './commands/invoices/delete-invoice.command';
+import { GeneratePresignedUrlHandler } from './commands/invoices/generate-presigned-url.command';
 import { UpdateInvoiceStatusHandler } from './commands/invoices/update-invoice-status.command';
 import { InvoicesController } from './controllers/invoices.controller';
 import { CategoryEntity } from './entities/category.entity';
@@ -15,6 +16,7 @@ import { InvoiceEntity } from './entities/invoice.entity';
 import { GetAllInvoicesHandler } from './queries/admin/get-all-invoices.query';
 import { GetCategoriesHandler } from './queries/admin/get-categories.query';
 import { GetInvoicesHandler } from './queries/user/get-invoice-data.query';
+import { S3Service } from './services/s3.service';
 import typeorm from './typeorm';
 
 const commands = [
@@ -22,6 +24,7 @@ const commands = [
   CreateInvoiceHandler,
   DeleteInvoiceHandler,
   UpdateInvoiceStatusHandler,
+  GeneratePresignedUrlHandler,
 ];
 
 const queries = [
@@ -29,6 +32,7 @@ const queries = [
   GetCategoriesHandler,
   GetAllInvoicesHandler,
 ];
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [typeorm] }),
@@ -45,6 +49,7 @@ const queries = [
   providers: [
     ...commands,
     ...queries,
+    S3Service,
     {
       provide: APP_GUARD,
       useFactory: (reflector: Reflector) => {

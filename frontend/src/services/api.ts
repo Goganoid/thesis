@@ -17,7 +17,7 @@ export const userApiProvider = axios.create({
 });
 
 export const expensesApiProvider = axios.create({
-  baseURL: import.meta.env.VITE_EXPENSE_API_URL,
+  baseURL: import.meta.env.VITE_INVOICE_API_URL,
 });
 
 const refreshAuthLogic = async (failedRequest: FailedRequest) => {

@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import InvoiceManagement from './pages/InvoiceManagement';
 
 const theme = createTheme();
 
@@ -26,6 +27,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/invoice-management"
+            element={
+              <ProtectedRoute>
+                <InvoiceManagement />
               </ProtectedRoute>
             }
           />
