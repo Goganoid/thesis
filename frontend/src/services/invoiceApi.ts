@@ -4,6 +4,7 @@ import {
   InvoiceCategory,
   InvoiceStatus,
   UserInvoiceData,
+  CategoriesDto,
 } from "../types/invoice";
 import { transformQueryParams } from "../utils/transformQueryParams";
 import { expensesApiProvider } from "./api";
@@ -56,5 +57,20 @@ export const invoiceApi = {
       );
       return response.data;
     },
+  },
+
+  async getCategories() {
+    const response = await expensesApiProvider.get<CategoriesDto>(
+      "/invoices/admin/categories"
+    );
+    return response.data;
+  },
+
+  async updateCategoryLimit(category: InvoiceCategory, limit: number) {
+    const response = await expensesApiProvider.put(
+      `/invoices/admin/categories/limits`,
+      { limit, category }
+    );
+    return response.data;
   },
 };

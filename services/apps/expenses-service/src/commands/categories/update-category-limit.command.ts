@@ -1,19 +1,21 @@
-import { UserRole } from '@app/shared';
-import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
+import { Command, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryEntity } from '../../entities/category.entity';
 import { InvoiceCategory } from '../../enums/invoice.category';
 import { InvoiceStatus } from '../../enums/invoice.status';
+import { UserData } from '@app/auth';
 
-export class UpdateCategoryLimitCommand implements ICommand {
+export class UpdateCategoryLimitCommand extends Command<void> {
   constructor(
     public readonly args: {
       category: InvoiceCategory;
       limit: number;
-      userRole: UserRole;
+      user: UserData;
     },
-  ) {}
+  ) {
+    super();
+  }
 }
 
 @CommandHandler(UpdateCategoryLimitCommand)

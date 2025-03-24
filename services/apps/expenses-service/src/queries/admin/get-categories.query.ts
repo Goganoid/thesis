@@ -18,7 +18,9 @@ export class GetCategoriesHandler implements IQueryHandler<GetCategoriesQuery> {
   ) {}
 
   async execute() {
-    const categories = await this.categoriesRepository.find();
+    const categories = await this.categoriesRepository.find({
+      order: { order: 'ASC' },
+    });
     return {
       categories: categories.map((c) => ({ id: c.id, limit: c.limit })),
     };

@@ -37,7 +37,9 @@ export class GetInvoicesHandler implements IQueryHandler<GetInvoicesQuery> {
         ...(dto.status?.length && { status: In(dto.status) }),
       },
     });
-    const categories = await this.categoriesRepository.find();
+    const categories = await this.categoriesRepository.find({
+      order: { order: 'ASC' },
+    });
     const { toInvoiceDto } = getInvoiceMapper(this.s3Service);
     return {
       invoices: await Promise.all(invoices.map(toInvoiceDto)),

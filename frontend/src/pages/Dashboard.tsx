@@ -150,8 +150,11 @@ export default function Dashboard() {
 
   return (
     <Box
-      height="100vh"
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
     >
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Box

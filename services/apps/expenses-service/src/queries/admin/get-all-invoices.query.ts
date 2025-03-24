@@ -38,6 +38,9 @@ export class GetAllInvoicesHandler
         createdAt: getYearFilter(dto.year),
         ...(dto.status?.length && { status: In(dto.status) }),
       },
+      relations: {
+        categoryRef: true,
+      },
     });
     return await Promise.all(invoices.map(toInvoiceDto));
   }

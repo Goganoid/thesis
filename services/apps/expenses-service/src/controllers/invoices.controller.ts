@@ -22,7 +22,8 @@ import { UpdateInvoiceDto } from '../dto/update-invoice-dto';
 import { GetAllInvoicesQuery } from '../queries/admin/get-all-invoices.query';
 import { GetCategoriesQuery } from '../queries/admin/get-categories.query';
 import { GetInvoicesQuery } from '../queries/user/get-invoice-data.query';
-
+import { UpdateCategoryLimitCommand } from '../commands/categories/update-category-limit.command';
+import { UpdateLimitDto } from '../dto/update-limit.dto';
 @Controller('invoices')
 export class InvoicesController {
   constructor(
@@ -61,6 +62,17 @@ export class InvoicesController {
   @Get('admin/categories')
   async getCategories(): Promise<QueryResult<GetCategoriesQuery>> {
     return await this.queryBus.execute(new GetCategoriesQuery());
+  }
+
+  @Roles([UserRole.Admin, UserRole.Bookkeeper])
+  @Put('admin/categories/limits')
+  async updateLimit(
+    @User() user: UserData,
+    @Body() { category, limit }: UpdateLimitDto,
+  ): Promise<CommandResult<UpdateCategoryLimitCommand>> {
+    return await this.commandBus.execute(
+      new UpdateCategoryLimitCommand({ category, limit, user }),
+    );
   }
 
   @Roles([UserRole.Admin, UserRole.Bookkeeper])

@@ -1,14 +1,14 @@
 export enum InvoiceCategory {
-  MEDICINE = 'MEDICINE',
-  EDUCATION = 'EDUCATION',
-  SPORT = 'SPORT',
+  MEDICINE = "MEDICINE",
+  EDUCATION = "EDUCATION",
+  SPORT = "SPORT",
 }
 
 export enum InvoiceStatus {
-  PAID = 'PAID',
-  IN_PROGRESS = 'IN_PROGRESS',
-  REJECTED = 'REJECTED',
-  WAITING_APPROVAL = 'WAITING_APPROVAL',
+  PAID = "PAID",
+  IN_PROGRESS = "IN_PROGRESS",
+  REJECTED = "REJECTED",
+  WAITING_APPROVAL = "WAITING_APPROVAL",
 }
 
 export interface Invoice {
@@ -39,4 +39,13 @@ export interface CreateInvoiceDto {
   description: string;
   s3Key: string | null;
   category: InvoiceCategory;
-} 
+}
+
+export interface CategoryDto {
+  id: InvoiceCategory;
+  limit: number;
+}
+
+export interface CategoriesDto {
+  categories: CategoryDto[];
+}

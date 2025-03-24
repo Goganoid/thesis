@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn, Generated } from 'typeorm';
 import { InvoiceEntity } from './invoice.entity';
 import { InvoiceCategory } from '../enums/invoice.category';
 import { ColumnNumericTransformer } from '@app/shared/typeorm/numeric.transformer';
@@ -7,6 +7,10 @@ import { ColumnNumericTransformer } from '@app/shared/typeorm/numeric.transforme
 export class CategoryEntity {
   @PrimaryColumn({ type: 'varchar', nullable: false })
   id: InvoiceCategory;
+
+  @Column({ type: 'integer', nullable: false })
+  @Generated('increment')
+  order: number;
 
   @OneToMany(() => InvoiceEntity, (invoice) => invoice.categoryRef, {
     cascade: true,
