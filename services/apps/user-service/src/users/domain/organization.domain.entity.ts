@@ -78,12 +78,19 @@ export class OrganizationAggregate extends DomainEntity<
       position: null,
       role: invite.role,
     });
+    this.entity.invites = this.entity.invites.filter(
+      (invite) => invite.id !== invite.id,
+    );
     this.events.push({
       type: 'create_user',
       email: options.email,
       password: options.password,
       position: null,
       role: invite.role,
+    });
+    this.events.push({
+      type: 'delete_invite',
+      id: invite.id!,
     });
   }
 
@@ -111,12 +118,10 @@ export class OrganizationAggregate extends DomainEntity<
     if (existingInvite) {
       throw new ApiException('Invite already exists');
     }
-    const existingUser = this.entity.users.find(
-      (user) => user.email === email,
-    );
+    const existingUser = this.entity.users.find((user) => user.email === email);
     if (existingUser) {
       throw new ApiException('User already exists');
-    } 
+    }
     this.entity.invites.push({ email, role });
     this.events.push({ type: 'create_invite', email, role });
   }

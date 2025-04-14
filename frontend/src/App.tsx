@@ -16,9 +16,13 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import InvoiceManagement from "./pages/InvoiceManagement";
 import Settings from "./pages/Settings";
+import { TimeoffsPage } from "./pages/TimeoffsPage";
+import { UsersPage } from "./pages/UsersPage";
 import { Navbar } from "./components/Navbar";
 import { useUserData } from "./hooks/queries/useUserData";
 import { UserRole } from "./types/auth";
+import { TeamPage } from "./pages/TeamPage";
+import TimeoffsManagementPage from './pages/TimeoffsManagementPage';
 const theme = createTheme();
 
 function ProtectedRoute({
@@ -74,6 +78,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/timeoffs"
+            element={
+              <ProtectedRoute>
+                <TimeoffsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/timeoffs/manage"
+            element={
+              <ProtectedRoute roles={[UserRole.Admin, UserRole.Manager]}>
+                <TimeoffsManagementPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/timeoffs/teams/:teamId"
+            element={
+              <ProtectedRoute>
+                <TeamPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute roles={[UserRole.Admin]}>
+                <UsersPage />
               </ProtectedRoute>
             }
           />

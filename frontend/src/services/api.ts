@@ -20,6 +20,10 @@ export const expensesApiProvider = axios.create({
   baseURL: import.meta.env.VITE_INVOICE_API_URL,
 });
 
+export const timeoffsApiProvider = axios.create({
+  baseURL: import.meta.env.VITE_TIMEOFFS_API_URL,
+});
+
 const refreshAuthLogic = async (failedRequest: FailedRequest) => {
   try {
     const refreshToken = localStorage.getItem("refreshToken");
@@ -84,3 +88,4 @@ const applyInterceptors = (api: AxiosInstance) => {
 
 applyInterceptors(userApiProvider);
 applyInterceptors(expensesApiProvider);
+applyInterceptors(timeoffsApiProvider);

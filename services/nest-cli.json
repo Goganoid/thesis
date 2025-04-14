@@ -59,7 +59,14 @@
       "entryFile": "main",
       "sourceRoot": "apps/timeoffs-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/timeoffs-service/tsconfig.app.json"
+        "tsConfigPath": "apps/timeoffs-service/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "../../../libs/**/*.proto",
+            "outDir": "dist/apps/timeoffs-service/apps/timeoffs-service/src",
+            "watchAssets": true
+          }
+        ]
       }
     },
     "user-service": {
@@ -68,7 +75,14 @@
       "entryFile": "main",
       "sourceRoot": "apps/user-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/user-service/tsconfig.app.json"
+        "tsConfigPath": "apps/user-service/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "../../../libs/**/*.proto",
+            "outDir": "dist/apps/user-service/apps/user-service/src",
+            "watchAssets": true
+          }
+        ]
       }
     }
   }

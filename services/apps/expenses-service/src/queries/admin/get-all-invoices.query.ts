@@ -6,7 +6,7 @@ import { In, Repository } from 'typeorm';
 import { GetInvoiceDataDto } from '../../dto/get-invoice-data.dto';
 import { InvoiceDto } from '../../dto/invoice.dto';
 import { InvoiceEntity } from '../../entities/invoice.entity';
-import { getYearFilter } from '../../helpers/getYearFilter';
+import { getYearFilter } from '../../../../../libs/shared/src/typeorm/getYearFilter';
 import { getInvoiceMapper } from '../../helpers/mappers/toInvoiceDto';
 import { validateRole } from '../../helpers/validateRole';
 import { S3Service } from '../../services/s3.service';

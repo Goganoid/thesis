@@ -6,8 +6,6 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 
 dotenvConfig({ path: '.env' });
 
-console.log('Entities', join(__dirname, '/**/*.entity{.ts,.js}'));
-
 const config: DataSourceOptions = {
   type: 'postgres',
   host: `${process.env.EXPENSES_SERVICE_POSTGRES_HOST}`,

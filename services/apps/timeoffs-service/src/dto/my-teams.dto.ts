@@ -1,3 +1,5 @@
+import { TeamDto } from './team.dto';
+
 export class MyTeamsDto {
-  teams: { name: string; id: string }[];
+  teams: TeamDto[];
 }

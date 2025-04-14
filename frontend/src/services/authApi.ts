@@ -4,6 +4,8 @@ import {
   LoginDto,
   RegisterDto,
   UserDataDto,
+  InviteDto,
+  CreateInviteDto,
 } from "../types/auth";
 import { userApiProvider } from "./api";
 
@@ -44,6 +46,26 @@ export const authApi = {
 
   getUserData: async () => {
     const response = await userApiProvider.get<UserDataDto>("/auth/user-data");
+    return response.data;
+  },
+
+  getUsers: async () => {
+    const response = await userApiProvider.get<UserDataDto[]>("/auth/admin/users");
+    return response.data;
+  },
+
+  getInvites: async () => {
+    const response = await userApiProvider.get<InviteDto[]>("/invites");
+    return response.data;
+  },
+
+  createInvite: async (data: CreateInviteDto) => {
+    const response = await userApiProvider.post<InviteDto>("/invites", data);
+    return response.data;
+  },
+
+  deleteInvite: async (id: string) => {
+    const response = await userApiProvider.delete<InviteDto>(`/invites/${id}`);
     return response.data;
   },
 };

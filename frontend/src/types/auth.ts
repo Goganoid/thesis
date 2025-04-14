@@ -1,8 +1,8 @@
 export enum UserRole {
-  Admin = 'ADMIN',
-  User = 'USER',
-  Manager = 'MANAGER',
-  Bookkeeper = 'BOOKKEEPER',
+  Admin = "ADMIN",
+  User = "USER",
+  Manager = "MANAGER",
+  Bookkeeper = "BOOKKEEPER",
 }
 
 export interface LoginDto {
@@ -35,6 +35,17 @@ export interface RefreshTokenDataDto {
 }
 
 export interface UserDataDto {
+  id: string;
+  email: string;
+  role: UserRole;
+}
+
+export interface CreateInviteDto {
+  email: string;
+  role: UserRole;
+}
+
+export interface InviteDto {
   id: string;
   email: string;
   role: UserRole;

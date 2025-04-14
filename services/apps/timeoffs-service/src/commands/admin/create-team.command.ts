@@ -1,17 +1,20 @@
 import { UserData } from '@app/auth';
-import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, Command, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TeamEntity } from '../../entities/team.entity';
 import { UserRole } from '@app/shared';
 import { ForbiddenException } from '@nestjs/common';
 import { CreateTeamDto } from '../../dto/create-team.dto';
+import { uniq } from 'lodash';
 
-export class CreateTeamCommand implements ICommand {
+export class CreateTeamCommand extends Command<string> {
   constructor(
     public readonly user: UserData,
     public readonly dto: CreateTeamDto,
-  ) {}
+  ) {
+    super();
+  }
 }
 
 @CommandHandler(CreateTeamCommand)
@@ -28,7 +31,8 @@ export class CreateTeamHandler implements ICommandHandler<CreateTeamCommand> {
 
     const team = await this.teamRepository.save({
       name: dto.name,
-      representativeId: dto.representativeId,
+      representativeId: user.id,
+      memberIds: uniq([user.id, ...dto.members]),
     });
 
     return team.id;

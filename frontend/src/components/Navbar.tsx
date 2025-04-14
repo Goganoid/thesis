@@ -4,6 +4,7 @@ import {
   EventNote as TimeoffIcon,
   AccountCircle as AccountCircleIcon,
   Logout as LogoutIcon,
+  People as PeopleIcon,
 } from "@mui/icons-material";
 import {
   Box,
@@ -54,7 +55,13 @@ export function Navbar() {
       text: "Timeoffs",
       icon: <TimeoffIcon />,
       path: "/timeoffs",
-      disabled: true,
+      disabled: false,
+    },
+    {
+      text: "Users",
+      icon: <PeopleIcon />,
+      path: "/users",
+      disabled: userData?.role !== UserRole.Admin,
     },
     {
       text: "Settings",

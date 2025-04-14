@@ -5,7 +5,7 @@ import { In, Repository } from 'typeorm';
 import { UserInvoiceDataDto } from '../../dto/user-invoice-data.dto';
 import { CategoryEntity } from '../../entities/category.entity';
 import { InvoiceEntity } from '../../entities/invoice.entity';
-import { getYearFilter } from '../../helpers/getYearFilter';
+import { getYearFilter } from '../../../../../libs/shared/src/typeorm/getYearFilter';
 import { getInvoiceMapper } from '../../helpers/mappers/toInvoiceDto';
 import { sumPaidInvoices } from '../../helpers/sumPaidInvoices';
 import { GetInvoiceDataDto } from '../../dto/get-invoice-data.dto';

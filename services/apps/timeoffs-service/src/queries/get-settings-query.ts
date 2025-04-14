@@ -18,7 +18,9 @@ export class GetSettingsHandler implements IQueryHandler<GetSettingsQuery> {
   ) {}
 
   async execute() {
-    const settings = await this.settingsRepository.findOneOrFail({});
+    const settings = await this.settingsRepository.findOneOrFail({
+      where: { id: 'primary' },
+    });
 
     return {
       maxVacationDays: settings.maxVacationDays,

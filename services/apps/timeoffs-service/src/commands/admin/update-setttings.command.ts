@@ -1,12 +1,13 @@
-import { ICommand, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { Command, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-
+import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateSettingsDto } from '../../dto/update-setttings.dto';
 import { SettingsEntity } from '../../entities/settings.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
-export class UpdateSettingsCommand implements ICommand {
-  constructor(public readonly dto: UpdateSettingsDto) {}
+export class UpdateSettingsCommand extends Command<void> {
+  constructor(public readonly dto: UpdateSettingsDto) {
+    super();
+  }
 }
 
 @CommandHandler(UpdateSettingsCommand)
@@ -19,9 +20,7 @@ export class UpdateSettingsHandler
   ) {}
 
   async execute({ dto }: UpdateSettingsCommand) {
-    const settings = await this.settingsRepository.findOneOrFail({});
-
-    await this.settingsRepository.update(settings.id, {
+    await this.settingsRepository.update('primary', {
       maxSickDays: dto.maxSickDays,
       maxVacationDays: dto.maxVacationDays,
     });

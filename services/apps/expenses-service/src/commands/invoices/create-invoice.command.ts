@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateInvoiceDto } from '../../dto/create-invoice.dto';
 import { CategoryEntity } from '../../entities/category.entity';
 import { InvoiceEntity } from '../../entities/invoice.entity';
-import { getYearFilter } from '../../helpers/getYearFilter';
+import { getYearFilter } from '../../../../../libs/shared/src/typeorm/getYearFilter';
 import { sumPaidInvoices } from '../../helpers/sumPaidInvoices';
 
 export class CreateInvoiceCommand implements ICommand {

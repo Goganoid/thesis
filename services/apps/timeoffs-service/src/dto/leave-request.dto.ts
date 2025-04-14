@@ -5,6 +5,8 @@ export class LeaveRequestDto {
 
   userId: string;
 
+  name: string;
+
   type: LeaveType;
 
   status: LeaveStatus;

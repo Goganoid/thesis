@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
+import { GrpcOptions, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,6 +34,20 @@ async function bootstrap() {
     app.enableCors(corsOptions);
   }
 
+  app.connectMicroservice<GrpcOptions>({
+    transport: Transport.GRPC,
+    options: {
+      url: configService.getOrThrow('USER_SERVICE_GRPC_URL'),
+      package: configService.getOrThrow('USER_SERVICE_GRPC_PACKAGE'),
+      protoPath: join(__dirname, 'proto/users.proto'),
+      loader: {
+        defaults: true,
+        arrays: true,
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
   await app.listen(process.env.USER_SERVICE_PORT ?? 3000);
 }
 

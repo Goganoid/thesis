@@ -10,7 +10,9 @@ import { InvitesController } from './controllers/invites.controller';
 import { GetInvitesHandler } from './queries/get-invites.query';
 import { GetUserDataHandler } from './queries/get-user-data.query';
 import { OrganizationRepository } from './repositories/organization.repository';
-
+import { GetAllUsersHandler } from './queries/get-all-users.query';
+import { GetManyUsersHandler } from './queries/get-many-users.query';
+import { UsersGrpcController } from './controllers/users.grpc.controller';
 const commands = [
   LoginHandler,
   RegisterHandler,
@@ -18,10 +20,15 @@ const commands = [
   CreateInviteHandler,
   DeleteInviteHandler,
 ];
-const queries = [GetInvitesHandler, GetUserDataHandler];
+const queries = [
+  GetInvitesHandler,
+  GetUserDataHandler,
+  GetAllUsersHandler,
+  GetManyUsersHandler,
+];
 @Module({
   imports: [SupabaseModule],
   providers: [OrganizationRepository, ...commands, ...queries],
-  controllers: [AuthController, InvitesController],
+  controllers: [AuthController, InvitesController, UsersGrpcController],
 })
 export class UsersModule {}

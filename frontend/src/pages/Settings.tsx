@@ -14,7 +14,9 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { invoiceApi } from "../services/invoiceApi";
+import { timeoffsApi } from "../services/timeoffsApi";
 import { CategoriesDto, CategoryDto, InvoiceCategory } from "../types/invoice";
+import { TimeoffSettingsDto } from "../types/timeoffs";
 
 interface EditableCategoryLimit {
   id: string;
@@ -22,18 +24,31 @@ interface EditableCategoryLimit {
   value: number;
 }
 
+interface EditableTimeoffSettings {
+  isEditing: boolean;
+  maxVacationDays: number;
+  maxSickDays: number;
+}
+
 export default function Settings() {
   const queryClient = useQueryClient();
-  const [editableLimits, setEditableLimits] = useState<EditableCategoryLimit[]>(
-    []
-  );
+  const [editableLimits, setEditableLimits] = useState<EditableCategoryLimit[]>([]);
+  const [editableTimeoffSettings, setEditableTimeoffSettings] = useState<EditableTimeoffSettings>({
+    isEditing: false,
+    maxVacationDays: 0,
+    maxSickDays: 0,
+  });
 
   const { data: categoriesData, isLoading } = useQuery<CategoriesDto>({
     queryKey: ["categories"],
     queryFn: () => invoiceApi.getCategories(),
   });
 
-  // Initialize editable limits when data changes
+  const { data: timeoffSettingsData, isLoading: isLoadingTimeoffSettings } = useQuery({
+    queryKey: ["timeoffSettings"],
+    queryFn: () => timeoffsApi.getSettings(),
+  });
+
   useEffect(() => {
     if (categoriesData) {
       setEditableLimits(
@@ -46,6 +61,16 @@ export default function Settings() {
     }
   }, [categoriesData]);
 
+  useEffect(() => {
+    if (timeoffSettingsData) {
+      setEditableTimeoffSettings({
+        isEditing: false,
+        maxVacationDays: timeoffSettingsData.maxVacationDays,
+        maxSickDays: timeoffSettingsData.maxSickDays,
+      });
+    }
+  }, [timeoffSettingsData]);
+
   const updateLimitMutation = useMutation({
     mutationFn: ({
       categoryId,
@@ -56,6 +81,13 @@ export default function Settings() {
     }) => invoiceApi.updateCategoryLimit(categoryId, limit),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+
+  const updateTimeoffSettingsMutation = useMutation({
+    mutationFn: (settings: Partial<TimeoffSettingsDto>) => timeoffsApi.updateSettings(settings),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["timeoffSettings"] });
     },
   });
 
@@ -94,7 +126,29 @@ export default function Settings() {
     );
   };
 
-  if (isLoading) {
+  const handleTimeoffSettingsEdit = () => {
+    setEditableTimeoffSettings(prev => ({ ...prev, isEditing: true }));
+  };
+
+  const handleTimeoffSettingsSave = async () => {
+    await updateTimeoffSettingsMutation.mutateAsync({
+      maxVacationDays: editableTimeoffSettings.maxVacationDays,
+      maxSickDays: editableTimeoffSettings.maxSickDays,
+    });
+    setEditableTimeoffSettings(prev => ({ ...prev, isEditing: false }));
+  };
+
+  const handleTimeoffSettingsChange = (field: keyof TimeoffSettingsDto, value: string) => {
+    const numValue = Number(value);
+    if (isNaN(numValue)) return;
+
+    setEditableTimeoffSettings(prev => ({
+      ...prev,
+      [field]: numValue,
+    }));
+  };
+
+  if (isLoading || isLoadingTimeoffSettings) {
     return (
       <Box
         display="flex"
@@ -186,9 +240,69 @@ export default function Settings() {
               <Typography variant="h6" gutterBottom>
                 Timeoffs
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                This feature is coming soon
+              <Typography variant="body2" color="text.secondary" paragraph>
+                Manage timeoff settings
               </Typography>
+              <Divider sx={{ my: 2 }} />
+
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <Typography>Max Vacation Days</Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    {editableTimeoffSettings.isEditing ? (
+                      <>
+                        <TextField
+                          size="small"
+                          type="number"
+                          value={editableTimeoffSettings.maxVacationDays}
+                          onChange={(e) => handleTimeoffSettingsChange("maxVacationDays", e.target.value)}
+                          sx={{ width: 100 }}
+                        />
+                      </>
+                    ) : (
+                      <Typography>{editableTimeoffSettings.maxVacationDays} days</Typography>
+                    )}
+                  </Box>
+                </Box>
+
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <Typography>Max Sick Days</Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    {editableTimeoffSettings.isEditing ? (
+                      <>
+                        <TextField
+                          size="small"
+                          type="number"
+                          value={editableTimeoffSettings.maxSickDays}
+                          onChange={(e) => handleTimeoffSettingsChange("maxSickDays", e.target.value)}
+                          sx={{ width: 100 }}
+                        />
+                      </>
+                    ) : (
+                      <Typography>{editableTimeoffSettings.maxSickDays} days</Typography>
+                    )}
+                  </Box>
+                </Box>
+
+                <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+                  {editableTimeoffSettings.isEditing ? (
+                    <IconButton
+                      color="primary"
+                      onClick={handleTimeoffSettingsSave}
+                      disabled={updateTimeoffSettingsMutation.isPending}
+                    >
+                      <SaveIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      color="primary"
+                      onClick={handleTimeoffSettingsEdit}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                </Box>
+              </Box>
             </CardContent>
           </Card>
         </Grid>

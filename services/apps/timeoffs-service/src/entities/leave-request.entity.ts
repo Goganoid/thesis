@@ -41,7 +41,7 @@ export class LeaveRequestEntity {
   @Column({ nullable: true })
   reviewedByRepresentativeId: string;
 
-  @ManyToOne(() => TeamEntity, (team) => team.id, {
+  @ManyToOne(() => TeamEntity, (team) => team.leaveRequests, {
     onDelete: 'CASCADE',
     nullable: false,
   })

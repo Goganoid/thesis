@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { LeaveRequestEntity } from './leave-request.entity';
 
 @Entity()
 export class TeamEntity {
@@ -13,4 +14,7 @@ export class TeamEntity {
 
   @Column({ type: 'varchar', nullable: false })
   name: string;
+
+  @OneToMany(() => LeaveRequestEntity, (leaveRequest) => leaveRequest.team)
+  leaveRequests: LeaveRequestEntity[];
 }

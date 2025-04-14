@@ -57,19 +57,45 @@ export type Database = {
           created_at: string | null
           id: string
           position: string | null
+          public_user_id: string | null
           role: string
         }
         Insert: {
           created_at?: string | null
           id: string
           position?: string | null
+          public_user_id?: string | null
           role?: string
         }
         Update: {
           created_at?: string | null
           id?: string
           position?: string | null
+          public_user_id?: string | null
           role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_public_user_id_fkey"
+            columns: ["public_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          email: string | null
+          id: string
+        }
+        Insert: {
+          email?: string | null
+          id: string
+        }
+        Update: {
+          email?: string | null
+          id?: string
         }
         Relationships: []
       }
@@ -78,7 +104,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      rbac_access_token_hook: {
+        Args: {
+          event: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
