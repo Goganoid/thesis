@@ -73,4 +73,13 @@ export const invoiceApi = {
     );
     return response.data;
   },
+
+  async generateReport(start: string, end: string) {
+    // returns csv string
+    const response = await expensesApiProvider.post<string>(
+      `/invoices/admin/invoices/report`,
+      { start, end }
+    );
+    return response.data;
+  },
 };

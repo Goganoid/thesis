@@ -24,6 +24,8 @@ import { GetCategoriesQuery } from '../queries/admin/get-categories.query';
 import { GetInvoicesQuery } from '../queries/user/get-invoice-data.query';
 import { UpdateCategoryLimitCommand } from '../commands/categories/update-category-limit.command';
 import { UpdateLimitDto } from '../dto/update-limit.dto';
+import { GenerateReportCommand } from '../commands/invoices/generate-report.command';
+import { GenerateReportDto } from '../dto/generate-report.dto';
 @Controller('invoices')
 export class InvoicesController {
   constructor(
@@ -62,6 +64,14 @@ export class InvoicesController {
   @Get('admin/categories')
   async getCategories(): Promise<QueryResult<GetCategoriesQuery>> {
     return await this.queryBus.execute(new GetCategoriesQuery());
+  }
+
+  @Roles([UserRole.Admin, UserRole.Bookkeeper])
+  @Post('admin/invoices/report')
+  async generateReport(
+    @Body() dto: GenerateReportDto,
+  ): Promise<CommandResult<GenerateReportCommand>> {
+    return await this.commandBus.execute(new GenerateReportCommand(dto));
   }
 
   @Roles([UserRole.Admin, UserRole.Bookkeeper])

@@ -9,8 +9,13 @@ import {
   Chip,
   alpha,
   useTheme,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
-import { Check, Close } from "@mui/icons-material";
+import { Check, Close, Download } from "@mui/icons-material";
 import { invoiceApi } from "../services/invoiceApi";
 import { Invoice, InvoiceStatus } from "../types/invoice";
 import { SortableDataTable, ColumnConfig } from "../components/SortableDataTable";
@@ -19,6 +24,9 @@ import { DetailsDialog, Grid } from "../components/DetailsDialog";
 const InvoiceManagement: React.FC = () => {
   const theme = useTheme();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const queryClient = useQueryClient();
 
   const { data: invoices, isLoading } = useQuery({
@@ -38,6 +46,24 @@ const InvoiceManagement: React.FC = () => {
     },
   });
 
+  const generateReportMutation = useMutation({
+    mutationFn: ({ start, end }: { start: string; end: string }) =>
+      invoiceApi.generateReport(start, end),
+    onSuccess: (csvString) => {
+      // Create a blob from the CSV string
+      const blob = new Blob([csvString], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `invoice-report-${startDate}-to-${endDate}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      setIsReportModalOpen(false);
+    },
+  });
+
   const handleApprove = () => {
     if (selectedInvoice) {
       updateStatusMutation.mutate({
@@ -53,6 +79,12 @@ const InvoiceManagement: React.FC = () => {
         id: selectedInvoice.id,
         status: InvoiceStatus.REJECTED,
       });
+    }
+  };
+
+  const handleGenerateReport = () => {
+    if (startDate && endDate) {
+      generateReportMutation.mutate({ start: startDate, end: endDate });
     }
   };
 
@@ -148,17 +180,34 @@ const InvoiceManagement: React.FC = () => {
           )} 0%, ${alpha(theme.palette.primary.main, 0.1)} 100%)`,
         }}
       >
-        <Typography
-          variant="h4"
-          gutterBottom
-          fontWeight="medium"
-          color="primary.main"
-        >
-          Invoice Management
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Review and approve pending invoices submitted by employees
-        </Typography>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box>
+            <Typography
+              variant="h4"
+              gutterBottom
+              fontWeight="medium"
+              color="primary.main"
+            >
+              Invoice Management
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Review and approve pending invoices submitted by employees
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<Download />}
+            onClick={() => setIsReportModalOpen(true)}
+            sx={{
+              borderRadius: 2,
+              px: 2,
+              textTransform: "none",
+              boxShadow: 1,
+            }}
+          >
+            Generate Report
+          </Button>
+        </Box>
       </Paper>
 
       <SortableDataTable
@@ -283,6 +332,51 @@ const InvoiceManagement: React.FC = () => {
           </Box>
         )}
       </DetailsDialog>
+
+      <Dialog
+        open={isReportModalOpen}
+        onClose={() => !generateReportMutation.isPending && setIsReportModalOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Generate Invoice Report</DialogTitle>
+        <DialogContent>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <TextField
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setIsReportModalOpen(false)}
+            disabled={generateReportMutation.isPending}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleGenerateReport}
+            variant="contained"
+            disabled={!startDate || !endDate || generateReportMutation.isPending}
+            startIcon={generateReportMutation.isPending ? <CircularProgress size={20} /> : <Download />}
+          >
+            Generate Report
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

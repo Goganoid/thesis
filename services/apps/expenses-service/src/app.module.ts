@@ -18,13 +18,15 @@ import { GetCategoriesHandler } from './queries/admin/get-categories.query';
 import { GetInvoicesHandler } from './queries/user/get-invoice-data.query';
 import { S3Service } from './services/s3.service';
 import typeorm from './typeorm';
-
+import { GrpcModule } from './grpc/grpc.module';
+import { GenerateReportHandler } from './commands/invoices/generate-report.command';
 const commands = [
   UpdateCategoryLimitHandler,
   CreateInvoiceHandler,
   DeleteInvoiceHandler,
   UpdateInvoiceStatusHandler,
   GeneratePresignedUrlHandler,
+  GenerateReportHandler,
 ];
 
 const queries = [
@@ -44,6 +46,7 @@ const queries = [
         configService.getOrThrow('typeorm'),
     }),
     TypeOrmModule.forFeature([CategoryEntity, InvoiceEntity]),
+    GrpcModule,
   ],
   controllers: [InvoicesController],
   providers: [

@@ -41,7 +41,14 @@
       "entryFile": "main",
       "sourceRoot": "apps/expenses-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/expenses-service/tsconfig.app.json"
+        "tsConfigPath": "apps/expenses-service/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "../../../libs/**/*.proto",
+            "outDir": "dist/apps/expenses-service/apps/expenses-service/src",
+            "watchAssets": true
+          }
+        ]
       }
     },
     "shared": {
@@ -79,6 +86,11 @@
         "assets": [
           {
             "include": "../../../libs/**/*.proto",
+            "outDir": "dist/apps/user-service/apps/user-service/src",
+            "watchAssets": true
+          },
+          {
+            "include": "../../../apps/user-service/src/assets/**/*.hbs",
             "outDir": "dist/apps/user-service/apps/user-service/src",
             "watchAssets": true
           }

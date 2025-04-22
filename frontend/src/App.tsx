@@ -108,7 +108,7 @@ function App() {
           <Route
             path="/users"
             element={
-              <ProtectedRoute roles={[UserRole.Admin]}>
+              <ProtectedRoute roles={[UserRole.Admin, UserRole.Bookkeeper]}>
                 <UsersPage />
               </ProtectedRoute>
             }

@@ -49,3 +49,8 @@ export interface CategoryDto {
 export interface CategoriesDto {
   categories: CategoryDto[];
 }
+
+export interface GenerateReportDto {
+  start: string;
+  end: string;
+}
