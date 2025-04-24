@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Invoice, InvoiceCategory, InvoiceStatus } from "../types/invoice";
+import { translateInvoiceStatus } from '../utils/translate';
 
 interface CategoryCardProps {
   category: {
@@ -172,7 +173,7 @@ export function CategoryCard({
                         }}
                       />
                       <Chip
-                        label={invoice.status}
+                        label={translateInvoiceStatus(invoice.status)}
                         sx={{
                           backgroundColor: getStatusColor(invoice.status),
                           color: "white",

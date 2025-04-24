@@ -32,6 +32,7 @@ import { UserRole, CreateInviteDto } from "../types/auth";
 import { invoiceApi } from "../services/invoiceApi";
 import { Invoice } from "../types/invoice";
 import { useUserData } from "../hooks/queries/useUserData";
+import { translateInvoiceStatus } from '../utils/translate';
 
 export function UsersPage() {
   const queryClient = useQueryClient();
@@ -77,8 +78,12 @@ export function UsersPage() {
     },
   });
 
-  const handleCreateInvite = () => {
-    createInviteMutation.mutate(inviteForm);
+  const handleCreateInvite = async () => {
+    await createInviteMutation.mutateAsync(inviteForm);
+    navigator.clipboard.writeText(
+      `${import.meta.env.VITE_APP_URL}/register`
+    );
+    alert("The link has been copied to your clipboard");
   };
 
   const handleDeleteInvite = (id: string) => {
@@ -256,8 +261,10 @@ export function UsersPage() {
                   {invoices.map((invoice) => (
                     <ListItem key={invoice.id}>
                       <ListItemText
-                        primary={`${invoice.category} - ${invoice.amount}€`}
-                        secondary={`Status: ${invoice.status} - ${new Date(
+                        primary={`${invoice.category} - ${invoice.amount}$`}
+                        secondary={`Status: ${translateInvoiceStatus(
+                          invoice.status
+                        )} - ${new Date(
                           invoice.createdAt
                         ).toLocaleDateString()}`}
                       />
