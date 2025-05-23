@@ -1,5 +1,6 @@
 import { AuthModule } from '@app/auth';
 import { JwtAuthGuard } from '@app/auth/jwt.auth.guard';
+import { HealthController } from '@app/shared/controllers/health.controller';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, Reflector } from '@nestjs/core';
@@ -19,8 +20,8 @@ import { GetMyTeamsQueryHandler } from './queries/get-my-teams.query';
 import { GetSettingsHandler } from './queries/get-settings-query';
 import { GetTeamLeaveRequestsHandler } from './queries/get-team-leave-requests.query';
 import { GetTeamHandler } from './queries/get-team.query';
-import typeorm from './typeorm';
 import { GetUserStatsHandler } from './queries/get-user-stats.query';
+import typeorm from './typeorm';
 const queries = [
   GetMyTeamsQueryHandler,
   GetSettingsHandler,
@@ -50,7 +51,7 @@ const commands = [
     TypeOrmModule.forFeature([LeaveRequestEntity, SettingsEntity, TeamEntity]),
     GrpcModule,
   ],
-  controllers: [TimeoffsController],
+  controllers: [TimeoffsController, HealthController],
   providers: [
     ...queries,
     ...commands,

@@ -20,6 +20,7 @@ import { S3Service } from './services/s3.service';
 import typeorm from './typeorm';
 import { GrpcModule } from './grpc/grpc.module';
 import { GenerateReportHandler } from './commands/invoices/generate-report.command';
+import { HealthController } from '@app/shared/controllers/health.controller';
 const commands = [
   UpdateCategoryLimitHandler,
   CreateInvoiceHandler,
@@ -48,7 +49,7 @@ const queries = [
     TypeOrmModule.forFeature([CategoryEntity, InvoiceEntity]),
     GrpcModule,
   ],
-  controllers: [InvoicesController],
+  controllers: [InvoicesController, HealthController],
   providers: [
     ...commands,
     ...queries,
