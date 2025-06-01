@@ -12,8 +12,6 @@ services:
         VITE_APP_URL: http://localhost
     ports:
       - "80:80"
-    env_file:
-      - ../frontend/.env.docker
     depends_on:
       - user-service
       - expenses-service
