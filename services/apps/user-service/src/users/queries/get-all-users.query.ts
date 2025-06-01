@@ -23,7 +23,6 @@ export class GetAllUsersHandler implements IQueryHandler<GetAllUsersQuery> {
     if (error) {
       throw new ApiException(error.message, 500);
     }
-
     return data.map((profile) => ({
       id: profile.id,
       role: profile.role as UserRole,

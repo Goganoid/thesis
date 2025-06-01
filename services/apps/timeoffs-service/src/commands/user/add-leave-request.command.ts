@@ -47,7 +47,9 @@ export class AddLeaveRequestHandler
       throw new NotFoundException(`Team with id ${teamId} not found`);
     }
 
-    const settings = await this.settingsRepository.findOneOrFail({});
+    const settings = await this.settingsRepository.findOneOrFail({
+      where: { id: 'primary' },
+    });
 
     const approvedLeaveDays = await this.leaveRequestRepository.find({
       where: {

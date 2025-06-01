@@ -37,7 +37,7 @@ async function bootstrap() {
   app.connectMicroservice<GrpcOptions>({
     transport: Transport.GRPC,
     options: {
-      url: configService.getOrThrow('USER_SERVICE_GRPC_URL'),
+      url: configService.getOrThrow('USER_SERVICE_GRPC_URL_INTERNAL'),
       package: configService.getOrThrow('USER_SERVICE_GRPC_PACKAGE'),
       protoPath: join(__dirname, 'proto/users.proto'),
       loader: {

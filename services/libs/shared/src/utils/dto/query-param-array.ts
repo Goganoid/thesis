@@ -8,7 +8,6 @@ const safeParse = (
 ) => {
   try {
     const result = parseFunction(value);
-    console.log('parse', value, result);
     return result;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error: any) {

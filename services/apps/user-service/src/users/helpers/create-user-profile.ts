@@ -5,9 +5,16 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 export const createUserProfile = async (
   client: SupabaseClient<Database>,
-  data: { id: string; role: UserRole; position: string | null },
+  data: { id: string; role: UserRole; position: string | null; public_user_id: string },
 ) => {
-  const result = await client.from('profiles').insert([data]);
+  const result = await client.from('profiles').insert([
+    {
+      id: data.id,
+      role: data.role,
+      position: data.position,
+      public_user_id: data.public_user_id,
+    },
+  ]);
 
   if (result.error) {
     throw new ApiException(result.error.message, 500);

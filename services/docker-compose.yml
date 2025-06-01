@@ -1,6 +1,58 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_USER_API_URL: http://localhost/api/users
+        VITE_INVOICE_API_URL: http://localhost/api/expenses
+        VITE_TIMEOFFS_API_URL: http://localhost/api/timeoffs
+        VITE_APP_URL: http://localhost
+    ports:
+      - "80:80"
+    env_file:
+      - ../frontend/.env.docker
+    depends_on:
+      - user-service
+      - expenses-service
+      - timeoffs-service
+
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: user-service
+    env_file:
+      - .env.docker
+    depends_on:
+      - expenses_db
+      - timeoffs_db
+
+  expenses-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: expenses-service
+    env_file:
+      - .env.docker
+    depends_on:
+      - expenses_db
+
+  timeoffs-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: timeoffs-service
+    env_file:
+      - .env.docker
+    depends_on:
+      - timeoffs_db
+
   expenses_db:
     image: postgres:15
     ports:
@@ -23,20 +75,20 @@ services:
     volumes:
       - timeoffs_data:/var/lib/postgresql/data
 
-  localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME-localstack-thesis}"
-    image: localstack/localstack
-    network_mode: bridge
-    environment:
-      - SERVICES=s3
-      - DEBUG=1
-      - DISABLE_CORS_CHECKS=1
-      - DISABLE_CUSTOM_CORS_S3=1
-    ports:
-      - "4566-4599:4566-4599"
-    volumes:
-      - "./scripts/localstack:/etc/localstack/init/ready.d"
-      - "//var/run/docker.sock:/var/run/docker.sock"
+  # localstack:
+  #   container_name: "${LOCALSTACK_DOCKER_NAME-localstack-thesis}"
+  #   image: localstack/localstack
+  #   network_mode: bridge
+  #   environment:
+  #     - SERVICES=s3
+  #     - DEBUG=1
+  #     - DISABLE_CORS_CHECKS=1
+  #     - DISABLE_CUSTOM_CORS_S3=1
+  #   ports:
+  #     - "4566-4599:4566-4599"
+  #   volumes:
+  #     - "./scripts/localstack:/etc/localstack/init/ready.d"
+  #     - "//var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
   expenses_data:

@@ -137,6 +137,7 @@ export class OrganizationRepository {
       id: user.id,
       position: event.position,
       role: event.role,
+      public_user_id: user.id,
     });
   }
 

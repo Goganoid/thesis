@@ -19,6 +19,10 @@ export class RolesGuard implements CanActivate {
     if (!user) {
       return false;
     }
-    return roles.includes(user.role);
+    const isAllowed = roles.includes(user.role);
+    if (!isAllowed) {
+      console.log('User is not allowed to access this resource', user);
+    }
+    return isAllowed;
   }
 }

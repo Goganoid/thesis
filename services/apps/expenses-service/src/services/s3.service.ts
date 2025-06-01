@@ -15,7 +15,7 @@ export class S3Service {
   private readonly bucketName: string;
 
   constructor(private readonly configService: ConfigService) {
-    const endpoint = this.configService.getOrThrow('AWS_ENDPOINT');
+    const endpoint = this.configService.get('AWS_ENDPOINT');
     this.s3Client = new S3Client({
       region: this.configService.getOrThrow('AWS_REGION'),
       credentials: {
@@ -36,13 +36,11 @@ export class S3Service {
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
-      ChecksumAlgorithm: 'SHA256',
-      ChecksumSHA256: hash,
     });
 
     const presignedUrl = await getSignedUrl(this.s3Client, command, {
       expiresIn: 3600,
-      unhoistableHeaders: new Set(['x-amz-checksum-sha256']),
+      // unhoistableHeaders: new Set(['x-amz-checksum-sha256']),
     });
 
     return { presignedUrl, key };
